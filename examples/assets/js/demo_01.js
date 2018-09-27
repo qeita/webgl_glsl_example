@@ -4,9 +4,19 @@
   const gl = canvas.getContext('webgl')
 
   let vertexShader, fragmentShader, program
-  let positionAttributeLocation, positionBuffer
+  let positionAttributeLocation,
+      resolutionUniformLocation,
+      positionBuffer
 
-  let positions =[
+  // let positions =[
+  //   10, 20,
+  //   80, 20,
+  //   10, 30,
+  //   10, 30,
+  //   80, 20,
+  //   80, 30
+  // ]
+  let positions = [
     0, 0,
     0, 0.5,
     0.7, 0
@@ -34,6 +44,8 @@
         program = createProgram(gl, vertexShader, fragmentShader)
 
         positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
+        resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution')
+
         positionBuffer = gl.createBuffer()
 
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
@@ -44,6 +56,7 @@
         gl.useProgram(program)
 
         gl.enableVertexAttribArray(positionAttributeLocation)
+        gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
 
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
         let size = 2
@@ -52,6 +65,7 @@
         let stride = 0
         let offset = 0
         let primitiveType = gl.TRIANGLES
+        // let count = 6
         let count = 3
 
         gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
